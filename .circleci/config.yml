@@ -1,0 +1,180 @@
+version: 2.1
+
+
+orbs:
+  maven: circleci/maven@1.0.1
+  codecov: codecov/codecov@1.1.1
+
+
+executors:
+  build-container:
+    environment:
+      _JAVA_OPTIONS: "-Xmx512m"
+    docker:
+      - image: cimg/openjdk:11.0
+
+
+jobs:
+  compile:
+    executor: build-container
+    resource_class: small
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - renogy-rover-api-{{ checksum "pom.xml" }}
+            - renogy-rover-api-
+      - run:
+          name: Checking version in pom.xml
+          command: |
+            version=$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
+            if [ "$version" != "SNAPSHOT" ]; then
+                echo "Version in pom.xml is not set to SNAPSHOT"
+                exit 1
+            fi
+            # Setting version so that it's correct in `build-info.properties`
+            version=$(git describe)
+            mvn versions:set -DnewVersion=${version}
+      - run:
+          name: Downloading dependencies & compile
+          command: |
+            mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
+            # Setting it back to SNAPSHOT for the cache
+            mvn versions:set -DnewVersion=SNAPSHOT
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: renogy-rover-api-{{ checksum "pom.xml" }}
+      - run:
+          name: Setting version
+          command: |
+            # Setting version again correctly for the following steps
+            version=$(git describe)
+            mvn versions:set -DnewVersion=${version}
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - project/*
+
+  tests:
+    executor: build-container
+    parallelism: 2
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /home/circleci/
+      - restore_cache:
+          keys:
+            - renogy-rover-api-{{ checksum "pom.xml" }}
+            - renogy-rover-api-
+      - run:
+          name: Enable Test Splitting
+          command: |
+            mkdir -p .circleci/tests/
+            # generate excluded surefire tests using provided pattern
+            circleci tests glob src/test/java/**/*Test.java src/test/java/**/*Tests.java src/test/java/**/*IT.java src/test/kotlin/**/*Test.kt src/test/kotlin/**/*Tests.kt src/test/kotlin/**/*IT.kt | \
+            sed -e 's#^src/test/java/\(.*\)\.java#\1#' | \
+            sed -e 's#^src/test/kotlin/\(.*\)\.kt#\1#' | \
+            tr "/" "." > .circleci/tests/surefire_classnames
+            cat .circleci/tests/surefire_classnames | \
+              circleci tests split --split-by=timings --timings-type=classname > /tmp/this_node_tests
+            cat .circleci/tests/surefire_classnames | \
+              grep -xvf /tmp/this_node_tests > .circleci/tests/surefire_classnames_ignore_list || true
+      - store_artifacts:
+          path: .circleci/tests/
+      - run:
+          name: Run Tests
+          command: mvn test -B -Dsurefire.excludesFile=.circleci/tests/surefire_classnames_ignore_list
+      - maven/process_test_results:
+          test_results_path: ~/project/target/surefire-reports
+      - codecov/upload:
+          when: on_success
+
+
+  build:
+    executor: build-container
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /home/circleci/
+      - restore_cache:
+          keys:
+            - renogy-rover-api-{{ checksum "pom.xml" }}
+            - renogy-rover-api-
+      - setup_remote_docker
+      - run:
+          name: Build
+          command: |
+            version=$(git describe)
+            docker_image_tag="logreposit/renogy-rover-api:${version}"
+            mvn versions:set -DnewVersion=${version}
+
+            # build mysql jar
+            rm -f "target/renogy-rover-api.jar"
+            mvn -DskipTests=true package
+            mv "target/renogy-rover-api.jar" docker/app.jar
+
+            # build docker image
+            echo "Building docker image ${docker_image_tag} ..."
+            cd ./docker
+            docker build -t ${docker_image_tag} .
+            echo "Successfully built image ${docker_image_tag}"
+      - run:
+          name: Saving docker image
+          command: |
+            version=$(git describe)
+            docker_image_tag="logreposit/renogy-rover-api:${version}"
+            mkdir ~/docker-images/
+            docker save ${docker_image_tag} > ~/docker-images/app.tar
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - docker-images/*
+
+
+  push:
+    resource_class: small
+    docker:
+      - image: cimg/base:stable-18.04
+    steps:
+      - attach_workspace:
+          at: /home/circleci/
+      - setup_remote_docker
+      - run:
+          name: Loading docker image
+          command: |
+            docker load < ~/docker-images/app.tar
+      - run:
+          name: Push
+          command: |
+            version=$(git describe)
+            docker_image_tag="logreposit/renogy-rover-api:${version}"
+            echo ${LOGREPOSIT_DOCKERHUB_PASSWORD} | docker login -u ${LOGREPOSIT_DOCKERHUB_USERNAME} --password-stdin
+            docker push ${docker_image_tag}
+            echo "Successfully pushed image ${docker_image_tag}"
+
+
+workflows:
+  base-workflow:
+    jobs:
+      - compile:
+          context: logreposit
+          filters:
+            tags:
+              ignore:
+                - v.*
+      - tests:
+          context: logreposit
+          requires:
+            - compile
+
+      - build:
+          context: logreposit
+          requires:
+            - compile
+
+      - push:
+          context: logreposit
+          requires:
+            - build
+            - tests
