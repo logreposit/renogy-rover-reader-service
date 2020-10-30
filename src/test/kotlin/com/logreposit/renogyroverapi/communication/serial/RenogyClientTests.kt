@@ -2,63 +2,82 @@ package com.logreposit.renogyroverapi.communication.serial
 
 import com.ghgande.j2mod.modbus.procimg.Register
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister
+import com.logreposit.renogyroverapi.communication.renogy.RenogyClient
+import com.logreposit.renogyroverapi.communication.renogy.RenogySerialClient
 import com.logreposit.renogyroverapi.configuration.RenogyConfiguration
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import kotlin.experimental.and
 
-class RenogySerialClientTests {
+class RenogyClientTests {
+
+    @Test
+    fun `test renogy`() {
+        val client = RenogyClient(RenogySerialClient(RenogyConfiguration().also { it.comPort = "/dev/tty.usbserial-AC00JCNA" }))
+
+        while (true) {
+            val ramData = client.getRamData()
+
+            println("Battery SoC: ${ramData.batteryCapacitySoc}, Battery Voltage: ${ramData.batteryVoltage}, Battery OverV: ${ramData.batteryOverVoltage}, Battery UnderV: ${ramData.batteryUnderVoltage}, Battery OverD: ${ramData.batteryOverDischarge}")
+
+            Thread.sleep(1000)
+        }
+
+        val asdf = "asdf"
+    }
+
     @Test
     fun `test asdf`() {
         val client = RenogySerialClient(RenogyConfiguration().also { it.comPort = "/dev/tty.usbserial-AC00JCNA" })
 
+        // Sent: 01 03 01 00 00 23 05 EF
+
         val result = client.readRamRegisters();
 
-        assertThat(result).hasSize(35)
-
-        val batteryCapacitySoc = result[0].value
-        val batteryVoltage = result[1].value
-        val chargingCurrent = result[2].value
+        val batteryCapacitySoc = result[0].value // % [0-100]
+        val batteryVoltage = result[1].value * 0.1 // Volt
+        val chargingCurrent = result[2].value * 0.01 // Ampere
 
         val temperatures = result[3].toBytes()
 
-        val controllerTemperature = getTemperature(temperatures[0])
-        val batteryTemperature = getTemperature(temperatures[1])
+        val controllerTemperature = getTemperature(temperatures[0]) // Degrees Celsius
+        val batteryTemperature = getTemperature(temperatures[1]) // Degrees Celsius
 
-        val loadVoltage = result[4].value
-        val loadCurrent = result[5].value
-        val loadPower = result[6].value
+        val loadVoltage = result[4].value * 0.1 // Volt
+        val loadCurrent = result[5].value * 0.01 // Ampere
+        val loadPower = result[6].value // Watt
 
-        val solarPanelVoltage = result[7].value
-        val solarPanelCurrent = result[8].value
-        val chargingPower = result[9].value
+        val solarPanelVoltage = result[7].value * 0.1 // Volt
+        val solarPanelCurrent = result[8].value * 0.01 // Ampere
+        val chargingPower = result[9].value // Watt
 
-        val loadStatus = result[10].value // according to doc write only?
+        val loadStatus = result[10].value // according to doc write only? Boolean: 0 / 1
 
-        val dailyBatteryVoltageMin = result[11].value
-        val dailyBatteryVoltageMax = result[12].value
-        val dailyChargingCurrentMax = result[13].value
-        val dailyDischargingCurrentMax = result[14].value
-        val dailyChargingPowerMax = result[15].value
-        val dailyDischargingPowerMax = result[16].value
-        val dailyChargingAmpereHours = result[17].value
-        val dailyDischargingAmpereHours = result[18].value
-        val dailyPowerGeneration = result[19].value
-        val dailyPowerConsumption = result[20].value
+        val dailyBatteryVoltageMin = result[11].value * 0.1 // Volt
+        val dailyBatteryVoltageMax = result[12].value * 0.1 // Volt
+        val dailyChargingCurrentMax = result[13].value * 0.01 // Ampere
+        val dailyDischargingCurrentMax = result[14].value * 0.01 // Ampere
+        val dailyChargingPowerMax = result[15].value // Watt
+        val dailyDischargingPowerMax = result[16].value // Watt
+        val dailyChargingAmpereHours = result[17].value // Ah
+        val dailyDischargingAmpereHours = result[18].value // Ah
+        val dailyPowerGeneration = result[19].value // ??
+        val dailyPowerConsumption = result[20].value // ??
 
         val totalOperatingDays = result[21].value
         val totalNumberOfBatteryOverDischarges = result[22].value
         val totalNumberOfBatteryFullCharges = result[23].value
 
-        val totalChargingAmpereHours = twoRegistersToInteger(result[24], result[25])
-        val totalDischargingAmpereHoursByteArray = twoRegistersToInteger(result[26], result[27])
-        val cumulativePowerGeneration = twoRegistersToInteger(result[28], result[29])
-        val cumulativePowerConsumption = twoRegistersToInteger(result[30], result[31])
+        val totalChargingAmpereHours = twoRegistersToInteger(result[24], result[25]) // Ah
+        val totalDischargingAmpereHours = twoRegistersToInteger(result[26], result[27]) // Ah
+        val cumulativePowerGeneration = twoRegistersToInteger(result[28], result[29]) // ??
+        val cumulativePowerConsumption = twoRegistersToInteger(result[30], result[31]) // ??
 
         val loadAndChargingStatus = result[32].toBytes()
 
         val streetLightStatus = loadAndChargingStatus[0]
-        val streetLightIsOn = isBitSetInByte(streetLightStatus, 7)
+        val streetLightIsOn = isBitSetInByte(streetLightStatus, 7) // / Boolean 0/1
         val streetLightBrightness = clearBit(streetLightStatus, 7).toInt() // 0 to 100 percent
 
         val chargingStatus = loadAndChargingStatus[1]
