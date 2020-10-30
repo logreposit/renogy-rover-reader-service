@@ -1,0 +1,117 @@
+# Logreposit Ingress definition file for the Renogy Rover Solar Charge Controller interface
+
+measurements:
+  - name: data
+    tags:
+      - device_address
+    fields:
+      - name: battery_capacity_soc
+        datatype: INTEGER
+        description: Current battery capacity, state of charge (0-100) [%]
+      - name: battery_voltage
+        datatype: FLOAT
+        description: Battery voltage [V]
+      - name: battery_charging_current
+        datatype: FLOAT
+        description: Charging current (to battery) [A]
+      - name: controller_temperature
+        datatype: INTEGER
+        description: Temperature of the solar charge controller [Degrees Celsius]
+      - name: battery_temperature
+        datatype: INTEGER
+        description: Temperature of the battery / ambient temperature [Degrees Celsius]
+      - name: load_voltage
+        datatype: FLOAT
+        description: Load (street light) voltage [V]
+      - name: load_current
+        datatype: FLOAT
+        description: Load (street light) current [A]
+      - name: load_power
+        datatype: INTEGER
+        description: Load (street sight) power [W]
+      - name: solar_panel_voltage
+        datatype: FLOAT
+        description: Solar panel voltage [V]
+      - name: solar_panel_current
+        datatype: FLOAT
+        description: Solar panel charging current (to controller) [A]
+      - name: solar_panel_power
+        datatype: INTEGER
+        description: Solar panel charging power [W]
+      - name: daily_battery_voltage_min
+        datatype: FLOAT
+        description: Minimum battery voltage of the current day [V]
+      - name: daily_battery_voltage_max
+        datatype: FLOAT
+        description: Maximum battery voltage of the current day [V]
+      - name: daily_charging_current_max
+        datatype: FLOAT
+        description: Maximum charging current of the current day [A]
+      - name: daily_discharging_current_max
+        datatype: FLOAT
+        description: Maximum discharging current of the current day [A]
+      - name: daily_charging_power_max
+        datatype: INTEGER
+        description: Maximum charging power of the current day [W]
+      - name: daily_discharging_power_max
+        datatype: INTEGER
+        description: Maximum discharging power of the current day [W]
+      - name: daily_charging_amp_hrs
+        datatype: INTEGER
+        description: Charging amp-hrs of the current day [Ah]
+      - name: daily_discharging_amp_hrs
+        datatype: INTEGER
+        description: Discharging amp-hrs of the current day [Ah]
+      - name: daily_power_generation
+        datatype: INTEGER
+        description: Power generation of the current day [kWh]
+      - name: daily_power_consumption
+        datatype: INTEGER
+        description: Power consumption of the current day [kWh]
+      - name: total_operating_days
+        datatype: INTEGER
+        description: Total number of operating days
+      - name: total_battery_over_discharges
+        datatype: INTEGER
+        description: Total number of battery over-discharges
+      - name: total_battery_full_charges
+        datatype: INTEGER
+        description: Total number of battery full-charges
+      - name: total_battery_charging_amp_hrs
+        datatype: INTEGER
+        description: Total charging amp-hrs of the battery [Ah]
+      - name: total_battery_discharging_amp_hrs
+        datatype: INTEGER
+        description: Total discharging amp-hrs of the battery [Ah]
+      - name: cumulative_power_generation
+        datatype: INTEGER
+        description: Cumulative power generation [kWh]
+      - name: cumulative_power_consumption
+        datatype: INTEGER
+        description: Cumulative power consumption [kWh]
+      - name: load_status
+        datatype: INTEGER
+        description: Load (street light) status (0/1)
+      - name: load_status_str
+        datatype: STRING
+        description: Load (street light) status (ON/OFF)
+      - name: street_light_brightness
+        datatype: INTEGER
+        description: Street light (load) brightness (0-100) [%]
+      - name: charging_state
+        datatype: INTEGER
+        description: Current charging state (0-6)
+      - name: charging_state_str
+        datatype: STRING
+        description: Current charging state (DEACTIVATED, ACTIVATED, MPPT, EQUALIZING, BOOST, FLOATING, CURRENT_LIMITING)
+  - name: faults
+    tags:
+      - device_address
+      - fault_name
+    fields:
+      - name: state
+        datatype: INTEGER
+        description: Indicates whether the fault is active or not (0/1)
+      - name: state_str
+        datatype: STRING
+        description: Indicates whether the fault is active or not (OK/NOT_OK)
