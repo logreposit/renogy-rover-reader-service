@@ -3,6 +3,8 @@ package com.logreposit.renogyroverapi.communication.renogy
 import com.ghgande.j2mod.modbus.procimg.Register
 import com.logreposit.renogyroverapi.utils.logger
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
+import java.nio.ByteBuffer
 import kotlin.experimental.and
 
 @Service
@@ -17,34 +19,34 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
         val faultsAndWarnings = registers[34].toBytes()
 
         return RenogyRamData(
-                batteryCapacitySoc = registers[0].value,
+                batteryCapacitySoc = registers[0].toUnsignedShort(),
                 batteryVoltage = parseVolts(registers[1]),
                 batteryChargingCurrent = parseAmperes(registers[2]),
                 controllerTemperature = parseTemperature(temperatures[0]),
                 batteryTemperature = parseTemperature(temperatures[1]),
                 loadVoltage = parseVolts(registers[4]),
                 loadCurrent = parseAmperes(registers[5]),
-                loadPower = registers[6].value,
+                loadPower = registers[6].toUnsignedShort(),
                 solarPanelVoltage = parseVolts(registers[7]),
                 solarPanelCurrent = parseAmperes(registers[8]),
-                solarPanelPower = registers[9].value,
+                solarPanelPower = registers[9].toUnsignedShort(),
                 dailyBatteryVoltageMin = parseVolts(registers[11]),
                 dailyBatteryVoltageMax = parseVolts(registers[12]),
                 dailyChargingCurrentMax = parseAmperes(registers[13]),
                 dailyDischargingCurrentMax = parseAmperes(registers[14]),
-                dailyChargingPowerMax = registers[15].value,
-                dailyDischargingPowerMax = registers[16].value,
-                dailyChargingAmpHrs = registers[17].value,
-                dailyDischargingAmpHrs = registers[18].value,
-                dailyPowerGeneration = registers[19].value,
-                dailyPowerConsumption = registers[20].value,
-                totalOperatingDays = registers[21].value,
-                totalBatteryOverDischarges = registers[22].value,
-                totalBatteryFullCharges = registers[23].value,
-                totalBatteryChargingAmpHrs = twoRegistersToInt(registers[24], registers[25]),
-                totalBatteryDischargingAmpHrs = twoRegistersToInt(registers[26], registers[27]),
-                cumulativePowerGeneration = twoRegistersToInt(registers[28], registers[29]),
-                cumulativePowerConsumption = twoRegistersToInt(registers[30], registers[31]),
+                dailyChargingPowerMax = registers[15].toUnsignedShort(),
+                dailyDischargingPowerMax = registers[16].toUnsignedShort(),
+                dailyChargingAmpHrs = registers[17].toUnsignedShort(),
+                dailyDischargingAmpHrs = registers[18].toUnsignedShort(),
+                dailyPowerGeneration = registers[19].toUnsignedShort(),
+                dailyPowerConsumption = registers[20].toUnsignedShort(),
+                totalOperatingDays = registers[21].toUnsignedShort(),
+                totalBatteryOverDischarges = registers[22].toUnsignedShort(),
+                totalBatteryFullCharges = registers[23].toUnsignedShort(),
+                totalBatteryChargingAmpHrs = twoRegistersToUnsignedInt(registers[24], registers[25]),
+                totalBatteryDischargingAmpHrs = twoRegistersToUnsignedInt(registers[26], registers[27]),
+                cumulativePowerGeneration = twoRegistersToUnsignedInt(registers[28], registers[29]),
+                cumulativePowerConsumption = twoRegistersToUnsignedInt(registers[30], registers[31]),
                 loadStatus = isBitSetInByte(loadAndChargingStatus[0], 7),
                 streetLightBrightness = clearBit(loadAndChargingStatus[0], 7).toInt(),
                 chargingState = loadAndChargingStatus[1].toInt(),
@@ -63,12 +65,14 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
                 batteryUnderVoltage = isBitSetInByte(faultsAndWarnings[1], 2),
                 batteryOverVoltage = isBitSetInByte(faultsAndWarnings[1], 1),
                 batteryOverDischarge = isBitSetInByte(faultsAndWarnings[1], 0)
-        )
+        ).also {
+            logger.info("Got data from solar charge controller: {}", it)
+        }
     }
 
-    private fun parseVolts(register: Register): Double = register.value * 0.1
+    private fun parseVolts(register: Register) = BigDecimal(register.value).multiply(BigDecimal("0.1")).toDouble()
 
-    private fun parseAmperes(register: Register): Double = register.value * 0.01
+    private fun parseAmperes(register: Register) = BigDecimal(register.value).multiply(BigDecimal("0.01")).toDouble()
 
     private fun parseTemperature(temperatureWithSigning: Byte): Int {
         val isNegative = isBitSetInByte(temperatureWithSigning, 7)
@@ -88,27 +92,23 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
 
     private fun clearBit(value: Byte, position: Int): Byte = (value and (1 shl position).inv().toByte())
 
-    private fun twoRegistersToInt(mostSignificantRegister: Register, leastSignificantRegister: Register): Int {
+    private fun twoRegistersToUnsignedInt(mostSignificantRegister: Register, leastSignificantRegister: Register): Long {
         val mostSignificantByteArray = mostSignificantRegister.toBytes()
         val leastSignificantByteArray = leastSignificantRegister.toBytes()
 
         val combinedByteArray = byteArrayOf(
-                leastSignificantByteArray[1],
-                leastSignificantByteArray[0],
+                mostSignificantByteArray[0],
                 mostSignificantByteArray[1],
-                mostSignificantByteArray[0]
+                leastSignificantByteArray[0],
+                leastSignificantByteArray[1]
         )
 
-        return littleEndianConversion(combinedByteArray)
+        return toUnsignedInt(combinedByteArray)
     }
 
-    private fun littleEndianConversion(bytes: ByteArray): Int {
-        var result = 0
-
-        for (i in bytes.indices) {
-            result = result or (bytes[i].toInt() shl 8 * i)
-        }
-
-        return result
+    fun toUnsignedInt(bytes: ByteArray): Long {
+        val buffer = ByteBuffer.allocate(8).put(byteArrayOf(0, 0, 0, 0)).put(bytes)
+        buffer.position(0)
+        return buffer.long
     }
 }
