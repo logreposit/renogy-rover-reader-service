@@ -93,6 +93,13 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
     private fun clearBit(value: Byte, position: Int): Byte = (value and (1 shl position).inv().toByte())
 
     private fun twoRegistersToUnsignedInt(mostSignificantRegister: Register, leastSignificantRegister: Register): Long {
+
+        fun toUnsignedInt(bytes: ByteArray): Long {
+            val buffer = ByteBuffer.allocate(8).put(byteArrayOf(0, 0, 0, 0)).put(bytes)
+            buffer.position(0)
+            return buffer.long
+        }
+
         val mostSignificantByteArray = mostSignificantRegister.toBytes()
         val leastSignificantByteArray = leastSignificantRegister.toBytes()
 
@@ -104,11 +111,5 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
         )
 
         return toUnsignedInt(combinedByteArray)
-    }
-
-    fun toUnsignedInt(bytes: ByteArray): Long {
-        val buffer = ByteBuffer.allocate(8).put(byteArrayOf(0, 0, 0, 0)).put(bytes)
-        buffer.position(0)
-        return buffer.long
     }
 }
