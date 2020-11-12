@@ -66,7 +66,7 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
                 batteryOverVoltage = isBitSetInByte(faultsAndWarnings[1], 1),
                 batteryOverDischarge = isBitSetInByte(faultsAndWarnings[1], 0)
         ).also {
-            logger.info("Got data from solar charge controller: {}", it)
+            logger.debug("Got data from solar charge controller: {}", it)
         }
     }
 
