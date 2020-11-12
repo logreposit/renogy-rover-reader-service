@@ -1,0 +1,17 @@
+
+# circuit, charge MOS short circuit
+# anti-reverse MOS short
+# solar panel reversely connected
+# solar panel working point over-voltage
+# solar panel counter-current
+# photovoltaic input side over-voltage
+# photovoltaic input side short circuit
+# photovoltaic input over-power
+# ambient temperature too high (battery sensor > 60 or 70 degrees)
+# controller temperature too high
+# load over-power or over-current
+# load short-circuit
+# battery over-voltage
+# battery under-voltage
+# battery over-discharge
+#

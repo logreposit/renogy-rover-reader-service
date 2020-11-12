@@ -1,0 +1,130 @@
+Sent: 01 03 01 00 00 23 05 EF
+Response: 01 03 46 00 64 01 0F 00 00 15 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 0F 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 2B 00 01 00 27 00 00 00 B8 00 00 00 2F 00 00 14 00 00 00 04 E6 00 00 00 00 00 00 8C 48
+
+Received 35 registers (from starting address 0x100) from solar charge controller: [100, 271, 0, 5401, 0, 0, 0, 0, 0, 0, 0, 0, 271, 0, 0, 0, 0, 0, 0, 0, 0, 43, 1, 39, 0, 184, 0, 47, 0, 5120, 0, 1254, 0, 0, 0]
+
+Received 35 registers (from starting address 0x100) from solar charge controller: [
+0, 1254, 0, 0, 0
+]
+
+
+01 03
+46
+00 64 = datalength
+00 = ??
+
+00 64  => 0x0064   =>   100         SoC                                 Reg: 100
+01 0F  => 0x010F   =>   271         battery voltage                     Reg: 271
+00 00  => 0x0000   =>     0         battery charging current            Reg: 0
+15 19  => 0x1519   =>  5401         temperature values                  Reg: 5401
+00 00  => 0x0000   =>     0         load voltage                        Reg: 0
+00 00  => 0x0000   =>     0         load current                        Reg: 0
+00 00  => 0x0000   =>     0         load power                          Reg: 0
+00 00  => 0x0000   =>     0         solar panel voltage                 Reg: 0
+00 00  => 0x0000   =>     0         solar panel current                 Reg: 0
+00 00  => 0x0000   =>     0         solar panel power                   Reg: 0
+00 00  => 0x0000   =>     0         daily battery voltage min           Reg: 0
+01 0F  => 0x010F   =>   271         daily battery voltage max           Reg: 0
+00 00  => 0x0000   =>     0         daily charging current max          Reg: 0
+00 00  => 0x0000   =>     0         daily discharging current max       Reg: 0
+00 00  => 0x0000   =>     0         daily charging power max            Reg: 0
+00 00  => 0x0000   =>     0         daily discharging power max         Reg: 0
+00 00  => 0x0000   =>     0         daily charging amp hrs              Reg: 0
+00 00  => 0x0000   =>     0         daily discharging amp hrs           Reg: 0
+00 00  => 0x0000   =>     0         daily power gen                     Reg: 0
+00 00  => 0x0000   =>     0         daily power consump                 Reg: 0
+====
+00 2B  => 0x002B   =>     43        total operating days                Reg: 43
+00 01  => 0x0001   =>      1        total battery over-discharges       Reg:  1
+00 27  => 0x0027   =>     39        total battery full charges          Reg: 39
+====
+
+00 00 00 B8     =>  0x000000B8  =>  184     total battery charging amp-hrs          Regs: 0, 184
+00 00 00 2F     =>  0x0000002F  =>   47     total battery discharging amp-hrs       Regs: 0, 47
+00 00 14 00     =>  0x00001400  => 5120     cumulative power generation             Regs: 0, 5120
+00 00 04 E6     =>  0x000004E6  => 1254     cumulative power consumption            Regs: 0, 1254
+
+=====
+
+Sample values:
+
+10 2A 04 E6    => 0x102A04E6 => 271189222
+
+// return buffer[0] & 0xff;
+
+=====
+
+
+    /**
+     * Returns a <tt>byte[]</tt> containing the given
+     * byte as unsigned hexadecimal number digits.
+     *
+     * @param i the int to be converted into a hex string.
+     *
+     * @return the generated hexadecimal representation as <code>byte[]</code>.
+     */
+    public static byte[] toHex(int i) {
+        StringBuilder buf = new StringBuilder(2);
+        //don't forget the second hex digit
+        if ((i & 0xff) < 0x10) {
+            buf.append("0");
+        }
+        buf.append(Long.toString(i & 0xff, 16).toUpperCase());
+        try {
+            return buf.toString().getBytes("US-ASCII");
+        }
+        catch (Exception e) {
+            logger.debug("Problem converting bytes to string - {}", e.getMessage());
+        }
+        return null;
+    }
+
+
+
+RenogyRamData(
+batteryCapacitySoc=100,
+batteryVoltage=27.1,
+batteryChargingCurrent=0.0,
+controllerTemperature=21,
+batteryTemperature=25,
+loadVoltage=0.0,
+loadCurrent=0.0,
+loadPower=0,
+solarPanelVoltage=0.0,
+solarPanelCurrent=0.0,
+solarPanelPower=0,
+dailyBatteryVoltageMin=0.0,
+dailyBatteryVoltageMax=27.1,
+dailyChargingCurrentMax=0.0,
+dailyDischargingCurrentMax=0.0,
+dailyChargingPowerMax=0,
+dailyDischargingPowerMax=0,
+dailyChargingAmpHrs=0,
+dailyDischargingAmpHrs=0,
+dailyPowerGeneration=0,
+dailyPowerConsumption=0,
+totalOperatingDays=43,
+totalBatteryOverDischarges=1,
+totalBatteryFullCharges=39,
+totalBatteryChargingAmpHrs=-72,
+totalBatteryDischargingAmpHrs=47,
+cumulativePowerGeneration=5120,
+cumulativePowerConsumption=-26,
+loadStatus=false,
+streetLightBrightness=0,
+chargingState=0,
+chargeMosShortCircuit=false,
+antiReverseMosShort=false,
+solarPanelReverselyConnected=false,
+solarPanelWorkingPointOverVoltage=false,
+solarPanelCounterCurrent=false,
+photovoltaicInputSideOverVoltage=false,
+photovoltaicInputSideShortCircuit=false,
+photovoltaicInputOverPower=false,
+ambientTemperatureTooHigh=false,
+controllerTemperatureTooHigh=false,
+loadOverPowerOrOverCurrent=false,
+loadShortCircuit=false,
+batteryOverVoltage=false,
+batteryUnderVoltage=false,
+batteryOverDischarge=false)
