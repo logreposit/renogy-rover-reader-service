@@ -19,7 +19,9 @@ class RenogyClientTests {
         while (true) {
             val ramData = client.getRamData()
 
-            println("Battery SoC: ${ramData.batteryCapacitySoc}, Battery Voltage: ${ramData.batteryVoltage}, Battery OverV: ${ramData.batteryOverVoltage}, Battery UnderV: ${ramData.batteryUnderVoltage}, Battery OverD: ${ramData.batteryOverDischarge}")
+            //println("Battery SoC: ${ramData.batteryCapacitySoc}, Battery Voltage: ${ramData.batteryVoltage}, Battery OverV: ${ramData.batteryOverVoltage}, Battery UnderV: ${ramData.batteryUnderVoltage}, Battery OverD: ${ramData.batteryOverDischarge}")
+            println("Daily Power Consumption: ${ramData.dailyPowerConsumption} \nCumul Power Cons: ${ramData.cumulativePowerConsumption} \nTotal disch amp hrs: ${ramData.totalBatteryDischargingAmpHrs}")
+            println("\n")
 
             Thread.sleep(1000)
         }
