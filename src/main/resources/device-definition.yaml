@@ -64,10 +64,10 @@ measurements:
         description: Discharging amp-hrs of the current day [Ah]
       - name: daily_power_generation
         datatype: INTEGER
-        description: Power generation of the current day [kWh]
+        description: Power generation of the current day [Wh]
       - name: daily_power_consumption
         datatype: INTEGER
-        description: Power consumption of the current day [kWh]
+        description: Power consumption of the current day [Wh]
       - name: total_operating_days
         datatype: INTEGER
         description: Total number of operating days
@@ -85,10 +85,10 @@ measurements:
         description: Total discharging amp-hrs of the battery [Ah]
       - name: cumulative_power_generation
         datatype: INTEGER
-        description: Cumulative power generation [kWh]
+        description: Cumulative power generation [Wh]
       - name: cumulative_power_consumption
         datatype: INTEGER
-        description: Cumulative power consumption [kWh]
+        description: Cumulative power consumption [Wh]
       - name: load_status
         datatype: INTEGER
         description: Load (street light) status (0/1)
