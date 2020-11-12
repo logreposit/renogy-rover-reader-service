@@ -3,12 +3,12 @@ package com.logreposit.renogyroverapi.communication.serial
 import com.logreposit.renogyroverapi.communication.renogy.RenogyClient
 import com.logreposit.renogyroverapi.communication.renogy.RenogySerialClient
 import com.logreposit.renogyroverapi.configuration.RenogyConfiguration
-import jdk.nashorn.internal.ir.annotations.Ignore
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class RenogyClientTests {
 
-    @Ignore
+    @Disabled
     @Test
     fun `test renogy`() {
         val client = RenogyClient(RenogySerialClient(RenogyConfiguration().also { it.comPort = "/dev/tty.usbserial-AC00JCNA" }))

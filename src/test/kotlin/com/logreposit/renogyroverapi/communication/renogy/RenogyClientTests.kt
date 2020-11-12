@@ -3,15 +3,15 @@ package com.logreposit.renogyroverapi.communication.renogy
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import jdk.nashorn.internal.ir.annotations.Ignore
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class RenogyClientTests {
 
     private val renogySerialClient: RenogySerialClient = mock()
 
-    @Ignore // TODO: test!
+    @Disabled // TODO: test!
     @Test
     fun `test get ram data expect parsing successful`() {
         whenever(renogySerialClient.readRamRegisters()).thenReturn(getSampleRegisters())
