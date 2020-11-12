@@ -33,7 +33,7 @@ class RenogySerialClient(renogyConfiguration: RenogyConfiguration) {
             throw RenogySerialClientException("The Solar Charge Controller did not return the expected 35 registers")
         }
 
-        logger.info("Received {} registers (from starting address 0x100) from solar charge controller: {}", registers.size, registers)
+        logger.debug("Received {} registers (from starting address 0x100) from solar charge controller: {}", registers.size, registers)
 
         return registers
     }
