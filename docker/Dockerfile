@@ -37,10 +37,10 @@ RUN cd /usr/src && \
     make clean all && \
     make install
 
-WORKDIR /opt/logreposit/froeling-reader-service
+WORKDIR /opt/logreposit/renogy-rover-reader-service
 
-COPY run.sh    /opt/logreposit/froeling-reader-service/run.sh
-COPY app.jar   /opt/logreposit/froeling-reader-service/app.jar
-RUN  chmod 755 /opt/logreposit/froeling-reader-service/run.sh
+COPY run.sh    /opt/logreposit/renogy-rover-reader-service/run.sh
+COPY app.jar   /opt/logreposit/renogy-rover-reader-service/app.jar
+RUN  chmod 755 /opt/logreposit/renogy-rover-reader-service/run.sh
 
-ENTRYPOINT ["/opt/logreposit/froeling-reader-service/run.sh"]
+ENTRYPOINT ["/opt/logreposit/renogy-rover-reader-service/run.sh"]
