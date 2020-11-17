@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml" />
-    <logger name="com.logreposit" level="ERROR" />
-    <logger name="org.springframework" level="ERROR"/>
-    <logger name="com.ghgande.j2mod.modbus" level="ERROR"/>
-    <logger name="jndi" level="ERROR"/>
-    <logger name="org.apache.http.wire" level="ERROR"/>
-</configuration>
