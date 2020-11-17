@@ -1,4 +1,4 @@
-package com.logreposit.pwsinterceptorservice.services.logreposit
+package com.logreposit.renogyrover.services.logreposit
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
