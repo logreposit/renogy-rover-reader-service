@@ -103,7 +103,11 @@ jobs:
             - renogy-rover-reader-service-
       - setup_remote_docker
       - run:
-          name: Build
+          name: Setup buildx
+          command: |
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - run:
+          name: Build and Push
           command: |
             version=$(git describe)
             docker_image_tag="logreposit/renogy-rover-reader-service:${version}"
@@ -117,41 +121,12 @@ jobs:
             # build docker image
             echo "Building docker image ${docker_image_tag} ..."
             cd ./docker
-            docker build -t ${docker_image_tag} .
-            echo "Successfully built image ${docker_image_tag}"
-      - run:
-          name: Saving docker image
-          command: |
-            version=$(git describe)
-            docker_image_tag="logreposit/renogy-rover-reader-service:${version}"
-            mkdir ~/docker-images/
-            docker save ${docker_image_tag} > ~/docker-images/app.tar
-      - persist_to_workspace:
-          root: /home/circleci/
-          paths:
-            - docker-images/*
-
-
-  push:
-    resource_class: small
-    docker:
-      - image: cimg/base:stable-18.04
-    steps:
-      - attach_workspace:
-          at: /home/circleci/
-      - setup_remote_docker
-      - run:
-          name: Loading docker image
-          command: |
-            docker load < ~/docker-images/app.tar
-      - run:
-          name: Push
-          command: |
-            version=$(git describe)
-            docker_image_tag="logreposit/renogy-rover-reader-service:${version}"
             echo ${LOGREPOSIT_DOCKERHUB_PASSWORD} | docker login -u ${LOGREPOSIT_DOCKERHUB_USERNAME} --password-stdin
-            docker push ${docker_image_tag}
-            echo "Successfully pushed image ${docker_image_tag}"
+            docker buildx build \
+             --platform linux/arm/v7,linux/arm64/v8,linux/amd64 \
+             --tag ${docker_image_tag} \
+             --push .
+            echo "Successfully built and pushed image ${docker_image_tag}"
 
 
 workflows:
