@@ -147,9 +147,4 @@ workflows:
           context: logreposit
           requires:
             - compile
-
-      - push:
-          context: logreposit
-          requires:
-            - build
             - tests
