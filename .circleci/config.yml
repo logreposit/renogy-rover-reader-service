@@ -109,6 +109,8 @@ jobs:
       - run:
           name: Build and Push
           command: |
+            export DOCKER_CLI_EXPERIMENTAL=enabled
+
             version=$(git describe)
             docker_image_tag="logreposit/renogy-rover-reader-service:${version}"
             mvn versions:set -DnewVersion=${version}
