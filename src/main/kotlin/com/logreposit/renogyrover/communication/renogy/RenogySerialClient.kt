@@ -1,10 +1,10 @@
-package com.logreposit.renogyroverapi.communication.renogy
+package com.logreposit.renogyrover.communication.renogy
 
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster
 import com.ghgande.j2mod.modbus.procimg.Register
 import com.ghgande.j2mod.modbus.util.SerialParameters
-import com.logreposit.renogyroverapi.configuration.RenogyConfiguration
-import com.logreposit.renogyroverapi.utils.logger
+import com.logreposit.renogyrover.configuration.RenogyConfiguration
+import com.logreposit.renogyrover.utils.logger
 import org.springframework.stereotype.Service
 
 class RenogySerialClientException(message: String, cause: Throwable? = null) : Exception(message, cause)

@@ -1,7 +1,7 @@
-package com.logreposit.renogyroverapi.communication.renogy
+package com.logreposit.renogyrover.communication.renogy
 
 import com.ghgande.j2mod.modbus.procimg.Register
-import com.logreposit.renogyroverapi.utils.logger
+import com.logreposit.renogyrover.utils.logger
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.nio.ByteBuffer

@@ -1,4 +1,4 @@
-package com.logreposit.renogyroverapi.communication.renogy
+package com.logreposit.renogyrover.communication.renogy
 
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister
 import com.nhaarman.mockito_kotlin.mock

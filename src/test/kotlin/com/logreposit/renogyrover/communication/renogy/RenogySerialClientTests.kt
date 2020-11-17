@@ -1,6 +1,6 @@
-package com.logreposit.renogyroverapi.communication.renogy
+package com.logreposit.renogyrover.communication.renogy
 
-import com.logreposit.renogyroverapi.configuration.RenogyConfiguration
+import com.logreposit.renogyrover.configuration.RenogyConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

@@ -1,4 +1,4 @@
-package com.logreposit.renogyroverapi.communication.renogy
+package com.logreposit.renogyrover.communication.renogy
 
 data class RenogyRamData (
         val batteryCapacitySoc: Int,

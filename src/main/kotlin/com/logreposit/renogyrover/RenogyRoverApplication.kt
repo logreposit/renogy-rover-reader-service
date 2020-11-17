@@ -1,11 +1,11 @@
-package com.logreposit.renogyroverapi
+package com.logreposit.renogyrover
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class RenogyRoverApiApplication
+class RenogyRoverApplication
 
 fun main(args: Array<String>) {
-	runApplication<RenogyRoverApiApplication>(*args)
+	runApplication<RenogyRoverApplication>(*args)
 }
