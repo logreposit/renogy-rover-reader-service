@@ -22,8 +22,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - renoger-rover-reader-service-{{ checksum "pom.xml" }}
-            - renoger-rover-reader-service-
+            - renogy-rover-reader-service-{{ checksum "pom.xml" }}
+            - renogy-rover-reader-service-
       - run:
           name: Checking version in pom.xml
           command: |
@@ -44,7 +44,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          key: renoger-rover-reader-service-{{ checksum "pom.xml" }}
+          key: renogy-rover-reader-service-{{ checksum "pom.xml" }}
       - run:
           name: Setting version
           command: |
@@ -65,8 +65,8 @@ jobs:
           at: /home/circleci/
       - restore_cache:
           keys:
-            - renoger-rover-reader-service-{{ checksum "pom.xml" }}
-            - renoger-rover-reader-service-
+            - renogy-rover-reader-service-{{ checksum "pom.xml" }}
+            - renogy-rover-reader-service-
       - run:
           name: Enable Test Splitting
           command: |
@@ -99,20 +99,20 @@ jobs:
           at: /home/circleci/
       - restore_cache:
           keys:
-            - renoger-rover-reader-service-{{ checksum "pom.xml" }}
-            - renoger-rover-reader-service-
+            - renogy-rover-reader-service-{{ checksum "pom.xml" }}
+            - renogy-rover-reader-service-
       - setup_remote_docker
       - run:
           name: Build
           command: |
             version=$(git describe)
-            docker_image_tag="logreposit/renoger-rover-reader-service:${version}"
+            docker_image_tag="logreposit/renogy-rover-reader-service:${version}"
             mvn versions:set -DnewVersion=${version}
 
             # build mysql jar
-            rm -f "target/renoger-rover-reader-service.jar"
+            rm -f "target/renogy-rover-reader-service.jar"
             mvn -DskipTests=true package
-            mv "target/renoger-rover-reader-service.jar" docker/app.jar
+            mv "target/renogy-rover-reader-service.jar" docker/app.jar
 
             # build docker image
             echo "Building docker image ${docker_image_tag} ..."
@@ -123,7 +123,7 @@ jobs:
           name: Saving docker image
           command: |
             version=$(git describe)
-            docker_image_tag="logreposit/renoger-rover-reader-service:${version}"
+            docker_image_tag="logreposit/renogy-rover-reader-service:${version}"
             mkdir ~/docker-images/
             docker save ${docker_image_tag} > ~/docker-images/app.tar
       - persist_to_workspace:
@@ -148,7 +148,7 @@ jobs:
           name: Push
           command: |
             version=$(git describe)
-            docker_image_tag="logreposit/renoger-rover-reader-service:${version}"
+            docker_image_tag="logreposit/renogy-rover-reader-service:${version}"
             echo ${LOGREPOSIT_DOCKERHUB_PASSWORD} | docker login -u ${LOGREPOSIT_DOCKERHUB_USERNAME} --password-stdin
             docker push ${docker_image_tag}
             echo "Successfully pushed image ${docker_image_tag}"
