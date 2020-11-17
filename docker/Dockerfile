@@ -1,4 +1,4 @@
-FROM openjdk:11-jre
+FROM adoptopenjdk:11-jre
 
 MAINTAINER Dominic Miglar <dominic.miglar@netunix.at>
 
