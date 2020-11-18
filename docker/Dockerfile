@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:debian-jre
+FROM adoptopenjdk/openjdk11
 
 MAINTAINER Dominic Miglar <dominic.miglar@netunix.at>
 
