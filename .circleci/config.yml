@@ -125,7 +125,7 @@ jobs:
             cd ./docker
             echo ${LOGREPOSIT_DOCKERHUB_PASSWORD} | docker login -u ${LOGREPOSIT_DOCKERHUB_USERNAME} --password-stdin
             docker buildx build \
-             --platform linux/arm/v7,linux/arm64/v8,linux/amd64 \
+             --platform linux/arm64/v8,linux/amd64 \
              --tag ${docker_image_tag} \
              --push .
             echo "Successfully built and pushed image ${docker_image_tag}"
