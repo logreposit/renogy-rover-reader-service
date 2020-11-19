@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import java.time.Duration
+import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 @Service
@@ -41,7 +42,7 @@ class LogrepositApiService(
             backoff = Backoff(delay = 500)
     )
     fun pushData(renogyRamData: RenogyRamData) {
-        val data = LogrepositIngressDataMapper.toLogrepositIngressDto(data = renogyRamData)
+        val data = LogrepositIngressDataMapper.toLogrepositIngressDto(date = Instant.now(), data = renogyRamData, address = "1") // TODO: address!
         val url = logrepositConfiguration.apiBaseUrl + "/v2/ingress/data"
 
         logger.info("Sending data to Logreposit API ({}): {}", url, data)

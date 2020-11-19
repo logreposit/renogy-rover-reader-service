@@ -27,7 +27,7 @@ data class FloatField (
 
 data class IntegerField(
         override val name: String,
-        val value: Int
+        val value: Long
 ) : Field(name = name, datatype = DataType.INTEGER)
 
 data class StringField(
