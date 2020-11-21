@@ -10,7 +10,7 @@ class ScheduledReportingService(
         private val renogyClient: RenogyClient,
         private val logrepositApiService: LogrepositApiService
 ) {
-    @Scheduled(initialDelay = 5000, fixedDelay = 5000)
+    @Scheduled(initialDelay = 5000, fixedDelayString = "\${logreposit.scrapeIntervalInMillis}")
     fun readAndReport() {
         val ramData = renogyClient.getRamData()
 

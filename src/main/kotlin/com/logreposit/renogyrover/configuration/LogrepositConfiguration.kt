@@ -8,4 +8,5 @@ import org.springframework.context.annotation.Configuration
 class LogrepositConfiguration {
     var apiBaseUrl: String? = "https://api.logreposit.com"
     var deviceToken: String? = "INVALID"
+    var scrapeIntervalInMillis: Long? = 15000
 }
