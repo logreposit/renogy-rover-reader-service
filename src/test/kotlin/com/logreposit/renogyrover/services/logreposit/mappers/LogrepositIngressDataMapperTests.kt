@@ -95,7 +95,7 @@ class LogrepositIngressDataMapperTests {
 
         val data = ingress.readings.first { it.measurement == "data" }
 
-        assertThat(getStringField(data.fields, "load_status").value).isEqualTo(0)
+        assertThat(getIntegerField(data.fields, "load_status").value).isEqualTo(0)
         assertThat(getStringField(data.fields, "load_status_str").value).isEqualTo("OFF")
     }
 
