@@ -86,6 +86,20 @@ class LogrepositIngressDataMapperTests {
     }
 
     @Test
+    fun `test map to ingress dto with load status false should convert to OFF`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(loadStatus = false)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "load_status").value).isEqualTo(0)
+        assertThat(getStringField(data.fields, "load_status_str").value).isEqualTo("OFF")
+    }
+
+    @Test
     fun `test map to ingress dto with charging state 0 should convert to DEACTIVATED`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
                 date = Instant.now(),
