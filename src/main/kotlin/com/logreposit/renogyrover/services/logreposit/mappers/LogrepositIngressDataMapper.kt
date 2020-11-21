@@ -1,7 +1,12 @@
 package com.logreposit.renogyrover.services.logreposit.mappers
 
 import com.logreposit.renogyrover.communication.renogy.RenogyRamData
-import com.logreposit.renogyrover.services.logreposit.dtos.ingress.*
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.FloatField
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.IngressData
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.IntegerField
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.Reading
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.StringField
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.Tag
 import java.time.Instant
 
 object LogrepositIngressDataMapper {
