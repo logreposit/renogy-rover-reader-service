@@ -13,15 +13,6 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
 
     fun getRamData(): RenogyRamData = parseRamData(renogySerialClient.readRamRegisters())
 
-    // chargingStatus
-    //     0 - charging deactivated
-    //     1 - charging activated
-    //     2 - mppt charging mode
-    //     3 - equalizing charging mode
-    //     4 - boost charging mode
-    //     5 - floating charging mode
-    //     6 - current limiting (overpower)
-
     private fun parseRamData(registers: Array<out Register>): RenogyRamData {
         val temperatures = registers[3].toBytes()
         val loadAndChargingStatus = registers[32].toBytes()
