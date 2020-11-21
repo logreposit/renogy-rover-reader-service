@@ -42,7 +42,12 @@ class LogrepositApiService(
             backoff = Backoff(delay = 500)
     )
     fun pushData(renogyRamData: RenogyRamData) {
-        val data = LogrepositIngressDataMapper.toLogrepositIngressDto(date = Instant.now(), data = renogyRamData, address = "1") // TODO: address!
+        val data = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                data = renogyRamData,
+                address = "1" // Address is currently hardcoded, in future maybe configurable
+        )
+
         val url = logrepositConfiguration.apiBaseUrl + "/v2/ingress/data"
 
         logger.info("Sending data to Logreposit API ({}): {}", url, data)
