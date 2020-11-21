@@ -5,6 +5,7 @@
 | master  | [![CircleCI](https://circleci.com/gh/logreposit/renogy-rover-reader-service/tree/master.svg?style=shield)](https://circleci.com/gh/logreposit/renogy-rover-reader-service/tree/master)   | [![codecov.io](https://codecov.io/gh/logreposit/renogy-rover-reader-service/branch/master/graphs/badge.svg)](https://codecov.io/gh/logreposit/renogy-rover-reader-service/branch/master/graphs/badge.svg)   |
 | develop | [![CircleCI](https://circleci.com/gh/logreposit/renogy-rover-reader-service/tree/develop.svg?style=shield)](https://circleci.com/gh/logreposit/renogy-rover-reader-service/tree/develop) | [![codecov.io](https://codecov.io/gh/logreposit/renogy-rover-reader-service/branch/develop/graphs/badge.svg)](https://codecov.io/gh/logreposit/renogy-rover-reader-service/branch/develop/graphs/badge.svg) |
 
+
 ## Service Description
 
 The renogy-rover-reader-service reads measurement and fault data from Renogy Rover compatible solar 
@@ -28,10 +29,6 @@ The `renogy-rover-reader-service` is a Spring Boot project and the library [`com
 is in use for the serial modbus communication.
 
 
-## Docker
-
-The latest images can be found on [Dockerhub](https://hub.docker.com/r/logreposit/renogy-rover-reader-service/tags).
-
 ## Configuration
 
 This service ships as a docker image and has to be configured via environment variables. 
@@ -43,3 +40,21 @@ This service ships as a docker image and has to be configured via environment va
 | LOGREPOSIT_DEVICETOKEN            | **INVALID**                | needs to be changed! | 
 | LOGREPOSIT_SCRAPEINTERVALINMILLIS | 15000                      |                      |
 
+
+## Docker
+
+The latest images can be found on [Dockerhub](https://hub.docker.com/r/logreposit/renogy-rover-reader-service/tags).
+
+Place the following `docker-compose.yml` file in a new folder, then run `docker-compose up -d`.
+
+```yaml
+version: '2.4'
+
+services:
+  renogy-rover-reader-service:
+    container_name: logreposit-renogy-rover-reader-service
+    image: logreposit/renogy-rover-reader-service:v0.0.0-58-g59b0cfd
+    restart: always
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+```
