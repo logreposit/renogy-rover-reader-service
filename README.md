@@ -53,7 +53,7 @@ version: '2.4'
 services:
   renogy-rover-reader-service:
     container_name: logreposit-renogy-rover-reader-service
-    image: logreposit/renogy-rover-reader-service:v0.0.0-58-g59b0cfd
+    image: logreposit/renogy-rover-reader-service:v0.1.0
     restart: always
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
