@@ -10,6 +10,10 @@
 The renogy-rover-reader-service reads measurement and fault data from Renogy Rover compatible solar charge controllers 
 using the Modbus RTU protocol over the RS232 interface and pushes it to the Logreposit API.
 
+## Docker
+
+The latest images can be found on [Dockerhub](https://hub.docker.com/r/logreposit/renogy-rover-reader-service/tags).
+
 ## Configuration
 
 This service ships as a docker image and has to be configured via environment variables. 
