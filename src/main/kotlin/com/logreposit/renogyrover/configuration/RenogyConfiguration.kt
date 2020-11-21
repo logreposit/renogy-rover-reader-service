@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ConfigurationProperties(prefix = "renogy")
 class RenogyConfiguration {
-    var comPort = "/dev/ttyUSB0"
+    var comPort: String? = null
 }

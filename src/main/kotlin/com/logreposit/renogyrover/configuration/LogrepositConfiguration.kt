@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ConfigurationProperties(prefix = "logreposit")
 class LogrepositConfiguration {
-    var apiBaseUrl: String? = "https://api.logreposit.com"
-    var deviceToken: String? = "INVALID"
-    var scrapeIntervalInMillis: Long? = 15000
+    var apiBaseUrl: String? = null
+    var deviceToken: String? = null
+    var scrapeIntervalInMillis: Long? = null
 }

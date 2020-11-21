@@ -9,7 +9,9 @@ import java.io.IOException
 class RenogySerialClientTests {
     @Test
     fun `test connect to slave without specifying a valid rs232 serial adapter connected to a solar charge controller`() {
-        val serialClient = RenogySerialClient(RenogyConfiguration())
+        val serialClient = RenogySerialClient(RenogyConfiguration().also {
+            it.comPort = "/dev/ttyUSB0"
+        })
         val e = assertThrows<RenogySerialClientException> {
             serialClient.readRamRegisters()
         }
