@@ -7,8 +7,21 @@
 
 ## Service Description
 
-The renogy-rover-reader-service reads measurement and fault data from Renogy Rover compatible solar charge controllers 
-using the Modbus RTU protocol over the RS232 interface and pushes it to the Logreposit API.
+The renogy-rover-reader-service reads measurement and fault data from Renogy Rover compatible solar 
+charge controllers using the Modbus RTU protocol over the RS232 interface and pushes it to the 
+Logreposit API.
+
+The implementation has been done with a TOYO SR-2440 MPPT Solar Charge Controller. The name of the 
+service `renogy-rover-reader-service` has been chosen because the [Modbus documentation](https://github.com/logreposit/renogy-rover-reader-service/blob/develop/doc/rover_modbus.pdf) 
+is labeled with the Renogy brand.
+
+Possible model descriptions are (list not finished):
+- TOYO SR-ML2420
+- TOYO SR-ML2430
+- TOYO SR-ML2440
+- SRNE ML2420
+- SRNE ML2430
+- SRNE ML2440
 
 ## Docker
 
