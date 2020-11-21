@@ -86,6 +86,97 @@ class LogrepositIngressDataMapperTests {
     }
 
     @Test
+    fun `test map to ingress dto with charging state 0 should convert to DEACTIVATED`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(chargingState = 0)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "charging_state_str").value).isEqualTo("DEACTIVATED")
+    }
+
+    @Test
+    fun `test map to ingress dto with charging state 1 should convert to ACTIVATED`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(chargingState = 1)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "charging_state_str").value).isEqualTo("ACTIVATED")
+    }
+
+    @Test
+    fun `test map to ingress dto with charging state 3 should convert to EQUALIZING`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(chargingState = 3)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "charging_state_str").value).isEqualTo("EQUALIZING")
+    }
+
+    @Test
+    fun `test map to ingress dto with charging state 4 should convert to BOOST`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(chargingState = 4)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "charging_state_str").value).isEqualTo("BOOST")
+    }
+
+    @Test
+    fun `test map to ingress dto with charging state 5 should convert to FLOATING`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(chargingState = 5)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "charging_state_str").value).isEqualTo("FLOATING")
+    }
+
+    @Test
+    fun `test map to ingress dto with charging state 6 should convert to CURRENT_LIMITING`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(chargingState = 6)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "charging_state_str").value).isEqualTo("CURRENT_LIMITING")
+    }
+
+    @Test
+    fun `test map to ingress dto with charging state 99 should convert to UNKNOWN`() {
+        val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
+                date = Instant.now(),
+                address = "5",
+                data = sampleRamData().copy(chargingState = 99)
+        )
+
+        val data = ingress.readings.first { it.measurement == "data" }
+
+        assertThat(getStringField(data.fields, "charging_state_str").value).isEqualTo("UNKNOWN")
+    }
+
+    @Test
     fun `test map to ingress dto with charge_mos_short_circuit error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
                 date = Instant.now(),
