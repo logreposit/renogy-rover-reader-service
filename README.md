@@ -57,4 +57,6 @@ services:
     restart: always
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
+    environment:
+      LOGREPOSIT_DEVICETOKEN: your-logreposit-device-token
 ```
