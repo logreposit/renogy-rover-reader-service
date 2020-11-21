@@ -1,7 +1,13 @@
 package com.logreposit.renogyrover.services.logreposit.mappers
 
-import com.logreposit.renogyrover.communication.renogy.RenogyRamData
-import com.logreposit.renogyrover.services.logreposit.dtos.ingress.*
+import com.logreposit.renogyrover.services.logreposit.SharedTestData.sampleRamData
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.Field
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.FloatField
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.IngressData
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.IntegerField
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.Reading
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.StringField
+import com.logreposit.renogyrover.services.logreposit.dtos.ingress.Tag
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.time.Instant
@@ -290,53 +296,4 @@ class LogrepositIngressDataMapperTests {
     private fun getIntegerField(fields: List<Field>, name: String) = fields.filter { name == it.name }.filterIsInstance(IntegerField::class.java).first()
     private fun getFloatField(fields: List<Field>, name: String) = fields.filter { name == it.name }.filterIsInstance(FloatField::class.java).first()
     private fun getStringField(fields: List<Field>, name: String) = fields.filter { name == it.name }.filterIsInstance(StringField::class.java).first()
-
-    private fun sampleRamData() = RenogyRamData(
-            batteryCapacitySoc = 91,
-            batteryVoltage = 25.1,
-            batteryChargingCurrent = 8.72,
-            controllerTemperature = 32,
-            batteryTemperature = 23,
-            loadVoltage = 25.2,
-            loadCurrent = 2.15,
-            loadPower = 54,
-            solarPanelVoltage = 52.9,
-            solarPanelCurrent = 34.45,
-            solarPanelPower = 1822,
-            dailyBatteryVoltageMin = 23.7,
-            dailyBatteryVoltageMax = 28.4,
-            dailyChargingCurrentMax = 31.12,
-            dailyDischargingCurrentMax = 2.91,
-            dailyChargingPowerMax = 2410,
-            dailyDischargingPowerMax = 78,
-            dailyChargingAmpHrs = 87,
-            dailyDischargingAmpHrs = 78,
-            dailyPowerGeneration = 2048,
-            dailyPowerConsumption = 1024,
-            totalOperatingDays = 9991,
-            totalBatteryOverDischarges = 3,
-            totalBatteryFullCharges = 500,
-            totalBatteryChargingAmpHrs = 4231,
-            totalBatteryDischargingAmpHrs = 1003,
-            cumulativePowerGeneration = 82700,
-            cumulativePowerConsumption = 12601,
-            loadStatus = true,
-            streetLightBrightness = 55,
-            chargingState = 2,
-            chargeMosShortCircuit = false,
-            antiReverseMosShort = false,
-            solarPanelReverselyConnected = false,
-            solarPanelWorkingPointOverVoltage = false,
-            solarPanelCounterCurrent = false,
-            photovoltaicInputSideOverVoltage = false,
-            photovoltaicInputSideShortCircuit = false,
-            photovoltaicInputOverPower = false,
-            ambientTemperatureTooHigh = false,
-            controllerTemperatureTooHigh = false,
-            loadOverPowerOrOverCurrent = false,
-            loadShortCircuit = false,
-            batteryOverVoltage = false,
-            batteryUnderVoltage = false,
-            batteryOverDischarge = false
-    )
 }
