@@ -24,6 +24,10 @@ Possible model descriptions are (list not finished):
 - SRNE ML2430
 - SRNE ML2440
 
+The `renogy-rover-reader-service` is a Spring Boot project and the library [`com.ghgande.j2mod`](https://mvnrepository.com/artifact/com.ghgande/j2mod) 
+is in use for the serial modbus communication.
+
+
 ## Docker
 
 The latest images can be found on [Dockerhub](https://hub.docker.com/r/logreposit/renogy-rover-reader-service/tags).
