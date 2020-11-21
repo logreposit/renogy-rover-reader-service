@@ -13,8 +13,8 @@ Logreposit API.
 
 The implementation has been done with a TOYO SR-2440 MPPT Solar Charge Controller. The name of the 
 service `renogy-rover-reader-service` has been chosen because the [Modbus documentation](https://github.com/logreposit/renogy-rover-reader-service/blob/develop/doc/rover_modbus.pdf) 
-is labeled with the Renogy brand (and I really could not find out which of those brands is actually 
-the manufacturer 😅).
+is labeled with the Renogy brand (and I really could not find out which of those brands/companies is 
+the actual manufacturer 😅).
 
 Possible model descriptions are (list not finished):
 - TOYO SR-ML2420
