@@ -11,6 +11,7 @@ import com.logreposit.renogyrover.services.logreposit.dtos.ingress.Tag
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.time.Instant
+import java.util.function.Consumer
 
 class LogrepositIngressDataMapperTests {
     @Test
@@ -73,14 +74,15 @@ class LogrepositIngressDataMapperTests {
 
         val faults = ingress.readings.filter { it.measurement == "faults" }
 
-        assertThat(faults).allSatisfy { reading ->
-            assertThat(reading.date).isEqualTo(date)
-            assertThat(reading.measurement).isEqualTo("faults")
-            assertThat(reading.tags).hasSize(2)
-            assertThat(reading.tags.first { it.name == "device_address" }.value).isEqualTo("5")
-            assertThat(reading.tags.filter { it.name == "fault_name"}).hasSize(1)
-            assertThat(reading.fields).hasSize(2)
-        }
+        // Consumer { -> Workaround for Kotlin 1.6.10, will be fixed in 1.6.20
+        assertThat(faults).allSatisfy(Consumer {
+            assertThat(it.date).isEqualTo(date)
+            assertThat(it.measurement).isEqualTo("faults")
+            assertThat(it.tags).hasSize(2)
+            assertThat(it.tags.first { t -> t.name == "device_address" }.value).isEqualTo("5")
+            assertThat(it.tags.filter { t -> t.name == "fault_name"}).hasSize(1)
+            assertThat(it.fields).hasSize(2)
+        })
 
         assertAllOk(readings = faults)
     }
@@ -373,10 +375,11 @@ class LogrepositIngressDataMapperTests {
     }
 
     private fun assertAllOk(readings: List<Reading>) =
-        assertThat(readings).allSatisfy {
+            // Consumer { -> Workaround for Kotlin 1.6.10, will be fixed in 1.6.20
+            assertThat(readings).allSatisfy(Consumer {
             assertThat(getIntegerField(fields = it.fields, name = "state").value).isEqualTo(0)
             assertThat(getStringField(fields = it.fields, name = "state_str").value).isEqualTo("OK")
-        }
+        })
 
     private fun assertAllOkExcept(ingress: IngressData, faultName: String) {
         val faults = ingress.readings.filter { it.measurement == "faults" }
