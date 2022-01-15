@@ -9,25 +9,25 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class RenogyRoverApiApplicationTests {
-	@Autowired
-	private lateinit var logrepositConfiguration: LogrepositConfiguration
+    @Autowired
+    private lateinit var logrepositConfiguration: LogrepositConfiguration
 
-	@Autowired
-	private lateinit var renogyConfiguration: RenogyConfiguration
+    @Autowired
+    private lateinit var renogyConfiguration: RenogyConfiguration
 
-	@Test
-	fun contextLoads() {
-	}
+    @Test
+    fun contextLoads() {
+    }
 
-	@Test
-	fun `test logreposit configuration initialization expect values from properties file`() {
-		assertThat(logrepositConfiguration.apiBaseUrl).isEqualTo("https://api.logreposit.com")
-		assertThat(logrepositConfiguration.deviceToken).isEqualTo("INVALID")
-		assertThat(logrepositConfiguration.scrapeIntervalInMillis).isEqualTo(15000)
-	}
+    @Test
+    fun `test logreposit configuration initialization expect values from properties file`() {
+        assertThat(logrepositConfiguration.apiBaseUrl).isEqualTo("https://api.logreposit.com")
+        assertThat(logrepositConfiguration.deviceToken).isEqualTo("INVALID")
+        assertThat(logrepositConfiguration.scrapeIntervalInMillis).isEqualTo(15000)
+    }
 
-	@Test
-	fun `test renogy configuration initialization expect values from properties file`() {
-		assertThat(renogyConfiguration.comPort).isEqualTo("/dev/ttyUSB0")
-	}
+    @Test
+    fun `test renogy configuration initialization expect values from properties file`() {
+        assertThat(renogyConfiguration.comPort).isEqualTo("/dev/ttyUSB0")
+    }
 }
