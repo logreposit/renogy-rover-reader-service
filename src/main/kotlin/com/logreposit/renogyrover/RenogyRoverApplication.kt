@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class RenogyRoverApplication
 
 fun main(args: Array<String>) {
-	runApplication<RenogyRoverApplication>(*args)
+    runApplication<RenogyRoverApplication>(*args)
 }
