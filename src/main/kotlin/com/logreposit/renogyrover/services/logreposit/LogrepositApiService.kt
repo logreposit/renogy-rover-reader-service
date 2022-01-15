@@ -2,6 +2,7 @@ package com.logreposit.renogyrover.services.logreposit
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.logreposit.renogyrover.communication.renogy.RenogyRamData
 import com.logreposit.renogyrover.services.logreposit.dtos.ingress.IngressDefinition
 import com.logreposit.renogyrover.utils.logger
@@ -74,9 +75,7 @@ class LogrepositApiService(
     }
 
     private fun getDefinition(): IngressDefinition {
-        val yamlMapper = ObjectMapper(YAMLFactory())
-
-//        yamlMapper.registerModule(KotlinModule())
+        val yamlMapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
         val definitionAsString = LogrepositApiService::class.java.getResource("/device-definition.yaml").readText()
 
