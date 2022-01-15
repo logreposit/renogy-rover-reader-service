@@ -21,9 +21,9 @@ class LogrepositIngressDataMapperTests {
         val date = Instant.now()
 
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = date,
-                address = "5",
-                data = ramData
+            date = date,
+            address = "5",
+            data = ramData
         )
 
         assertThat(ingress.readings).hasSize(16)
@@ -75,14 +75,16 @@ class LogrepositIngressDataMapperTests {
         val faults = ingress.readings.filter { it.measurement == "faults" }
 
         // Consumer { -> Workaround for Kotlin 1.6.10, will be fixed in 1.6.20
-        assertThat(faults).allSatisfy(Consumer {
-            assertThat(it.date).isEqualTo(date)
-            assertThat(it.measurement).isEqualTo("faults")
-            assertThat(it.tags).hasSize(2)
-            assertThat(it.tags.first { t -> t.name == "device_address" }.value).isEqualTo("5")
-            assertThat(it.tags.filter { t -> t.name == "fault_name"}).hasSize(1)
-            assertThat(it.fields).hasSize(2)
-        })
+        assertThat(faults).allSatisfy(
+            Consumer {
+                assertThat(it.date).isEqualTo(date)
+                assertThat(it.measurement).isEqualTo("faults")
+                assertThat(it.tags).hasSize(2)
+                assertThat(it.tags.first { t -> t.name == "device_address" }.value).isEqualTo("5")
+                assertThat(it.tags.filter { t -> t.name == "fault_name" }).hasSize(1)
+                assertThat(it.fields).hasSize(2)
+            }
+        )
 
         assertAllOk(readings = faults)
     }
@@ -90,9 +92,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with load status false should convert to OFF`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(loadStatus = false)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(loadStatus = false)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -104,9 +106,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charging state 0 should convert to DEACTIVATED`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargingState = 0)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargingState = 0)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -117,9 +119,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charging state 1 should convert to ACTIVATED`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargingState = 1)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargingState = 1)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -130,9 +132,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charging state 3 should convert to EQUALIZING`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargingState = 3)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargingState = 3)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -143,9 +145,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charging state 4 should convert to BOOST`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargingState = 4)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargingState = 4)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -156,9 +158,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charging state 5 should convert to FLOATING`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargingState = 5)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargingState = 5)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -169,9 +171,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charging state 6 should convert to CURRENT_LIMITING`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargingState = 6)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargingState = 6)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -182,9 +184,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charging state 99 should convert to UNKNOWN`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargingState = 99)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargingState = 99)
         )
 
         val data = ingress.readings.first { it.measurement == "data" }
@@ -195,9 +197,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with charge_mos_short_circuit error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(chargeMosShortCircuit = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(chargeMosShortCircuit = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "charge_mos_short_circuit")
@@ -206,9 +208,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with anti_reverse_mos_short error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(antiReverseMosShort = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(antiReverseMosShort = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "anti_reverse_mos_short")
@@ -217,9 +219,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with solar_panel_reversely_connected error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(solarPanelReverselyConnected = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(solarPanelReverselyConnected = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "solar_panel_reversely_connected")
@@ -228,9 +230,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with solar_panel_working_point_over_voltage error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(solarPanelWorkingPointOverVoltage = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(solarPanelWorkingPointOverVoltage = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "solar_panel_working_point_over_voltage")
@@ -239,9 +241,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with solar_panel_counter_current error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(solarPanelCounterCurrent = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(solarPanelCounterCurrent = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "solar_panel_counter_current")
@@ -250,9 +252,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with photovoltaic_input_side_over_voltage error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(photovoltaicInputSideOverVoltage = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(photovoltaicInputSideOverVoltage = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "photovoltaic_input_side_over_voltage")
@@ -261,9 +263,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with photovoltaic_input_side_short_circuit error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(photovoltaicInputSideShortCircuit = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(photovoltaicInputSideShortCircuit = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "photovoltaic_input_side_short_circuit")
@@ -272,9 +274,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with photovoltaic_input_over_power error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(photovoltaicInputOverPower = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(photovoltaicInputOverPower = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "photovoltaic_input_over_power")
@@ -283,9 +285,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with ambient_temperature_too_high error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(ambientTemperatureTooHigh = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(ambientTemperatureTooHigh = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "ambient_temperature_too_high")
@@ -294,9 +296,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with controller_temperature_too_high error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(controllerTemperatureTooHigh = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(controllerTemperatureTooHigh = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "controller_temperature_too_high")
@@ -305,9 +307,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with load_over_power_or_over_current error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(loadOverPowerOrOverCurrent = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(loadOverPowerOrOverCurrent = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "load_over_power_or_over_current")
@@ -316,9 +318,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with load_short_circuit error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(loadShortCircuit = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(loadShortCircuit = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "load_short_circuit")
@@ -327,9 +329,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with battery_over_voltage error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(batteryOverVoltage = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(batteryOverVoltage = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "battery_over_voltage")
@@ -338,9 +340,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with battery_under_voltage error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(batteryUnderVoltage = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(batteryUnderVoltage = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "battery_under_voltage")
@@ -349,9 +351,9 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with battery_over_discharge error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(batteryOverDischarge = true)
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(batteryOverDischarge = true)
         )
 
         assertAllOkExcept(ingress = ingress, faultName = "battery_over_discharge")
@@ -360,12 +362,12 @@ class LogrepositIngressDataMapperTests {
     @Test
     fun `test map to ingress dto with solar_panel_counter_current and battery_under_voltage error`() {
         val ingress = LogrepositIngressDataMapper.toLogrepositIngressDto(
-                date = Instant.now(),
-                address = "5",
-                data = sampleRamData().copy(
-                        solarPanelCounterCurrent = true,
-                        batteryUnderVoltage = true
-                )
+            date = Instant.now(),
+            address = "5",
+            data = sampleRamData().copy(
+                solarPanelCounterCurrent = true,
+                batteryUnderVoltage = true
+            )
         )
 
         val faults = ingress.readings.filter { it.measurement == "faults" }
@@ -375,11 +377,13 @@ class LogrepositIngressDataMapperTests {
     }
 
     private fun assertAllOk(readings: List<Reading>) =
-            // Consumer { -> Workaround for Kotlin 1.6.10, will be fixed in 1.6.20
-            assertThat(readings).allSatisfy(Consumer {
-            assertThat(getIntegerField(fields = it.fields, name = "state").value).isEqualTo(0)
-            assertThat(getStringField(fields = it.fields, name = "state_str").value).isEqualTo("OK")
-        })
+        // Consumer { -> Workaround for Kotlin 1.6.10, will be fixed in 1.6.20
+        assertThat(readings).allSatisfy(
+            Consumer {
+                assertThat(getIntegerField(fields = it.fields, name = "state").value).isEqualTo(0)
+                assertThat(getStringField(fields = it.fields, name = "state_str").value).isEqualTo("OK")
+            }
+        )
 
     private fun assertAllOkExcept(ingress: IngressData, faultName: String) {
         val faults = ingress.readings.filter { it.measurement == "faults" }

@@ -14,15 +14,17 @@ class RenogySerialClient(renogyConfiguration: RenogyConfiguration) {
     val logger = logger()
 
     val master = ModbusSerialMaster(
-            SerialParameters(
-                    renogyConfiguration.comPort,
-                    9600,
-                    0,
-                    0,
-                    8,
-                    1,
-                    0,
-                    false))
+        SerialParameters(
+            renogyConfiguration.comPort,
+            9600,
+            0,
+            0,
+            8,
+            1,
+            0,
+            false
+        )
+    )
 
     fun readRamRegisters(): Array<out Register> {
         connectToSlave()

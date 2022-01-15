@@ -21,8 +21,8 @@ class ScheduledReportingServiceTests {
     @Test
     fun `test readAndReport expect data read from renogy client and pushed to logreposit api`() {
         val scheduledReportingService = ScheduledReportingService(
-                renogyClient,
-                logrepositApiService
+            renogyClient,
+            logrepositApiService
         )
 
         val ramData = sampleRamData()
@@ -33,7 +33,7 @@ class ScheduledReportingServiceTests {
 
         verify(renogyClient, times(1)).getRamData()
         verify(logrepositApiService, times(1)).pushData(
-                renogyRamDataArgumentCaptor.capture()
+            renogyRamDataArgumentCaptor.capture()
         )
 
         assertThat(renogyRamDataArgumentCaptor.allValues).hasSize(1)

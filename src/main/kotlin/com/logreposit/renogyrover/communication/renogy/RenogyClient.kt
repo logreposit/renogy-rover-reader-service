@@ -19,52 +19,52 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
         val faultsAndWarnings = registers[34].toBytes()
 
         return RenogyRamData(
-                batteryCapacitySoc = registers[0].toUnsignedShort(),
-                batteryVoltage = parseVolts(registers[1]),
-                batteryChargingCurrent = parseAmperes(registers[2]),
-                controllerTemperature = parseTemperature(temperatures[0]),
-                batteryTemperature = parseTemperature(temperatures[1]),
-                loadVoltage = parseVolts(registers[4]),
-                loadCurrent = parseAmperes(registers[5]),
-                loadPower = registers[6].toUnsignedShort(),
-                solarPanelVoltage = parseVolts(registers[7]),
-                solarPanelCurrent = parseAmperes(registers[8]),
-                solarPanelPower = registers[9].toUnsignedShort(),
-                dailyBatteryVoltageMin = parseVolts(registers[11]),
-                dailyBatteryVoltageMax = parseVolts(registers[12]),
-                dailyChargingCurrentMax = parseAmperes(registers[13]),
-                dailyDischargingCurrentMax = parseAmperes(registers[14]),
-                dailyChargingPowerMax = registers[15].toUnsignedShort(),
-                dailyDischargingPowerMax = registers[16].toUnsignedShort(),
-                dailyChargingAmpHrs = registers[17].toUnsignedShort(),
-                dailyDischargingAmpHrs = registers[18].toUnsignedShort(),
-                dailyPowerGeneration = registers[19].toUnsignedShort(),
-                dailyPowerConsumption = registers[20].toUnsignedShort(),
-                totalOperatingDays = registers[21].toUnsignedShort(),
-                totalBatteryOverDischarges = registers[22].toUnsignedShort(),
-                totalBatteryFullCharges = registers[23].toUnsignedShort(),
-                totalBatteryChargingAmpHrs = twoRegistersToUnsignedInt(registers[24], registers[25]),
-                totalBatteryDischargingAmpHrs = twoRegistersToUnsignedInt(registers[26], registers[27]),
-                cumulativePowerGeneration = twoRegistersToUnsignedInt(registers[28], registers[29]),
-                cumulativePowerConsumption = twoRegistersToUnsignedInt(registers[30], registers[31]),
-                loadStatus = isBitSetInByte(loadAndChargingStatus[0], 7),
-                streetLightBrightness = clearBit(loadAndChargingStatus[0], 7).toInt(),
-                chargingState = loadAndChargingStatus[1].toInt(),
-                chargeMosShortCircuit = isBitSetInByte(faultsAndWarnings[0], 6),
-                antiReverseMosShort = isBitSetInByte(faultsAndWarnings[0], 5),
-                solarPanelReverselyConnected = isBitSetInByte(faultsAndWarnings[0], 4),
-                solarPanelWorkingPointOverVoltage = isBitSetInByte(faultsAndWarnings[0], 3),
-                solarPanelCounterCurrent = isBitSetInByte(faultsAndWarnings[0], 2),
-                photovoltaicInputSideOverVoltage = isBitSetInByte(faultsAndWarnings[0], 1),
-                photovoltaicInputSideShortCircuit = isBitSetInByte(faultsAndWarnings[0], 0),
-                photovoltaicInputOverPower = isBitSetInByte(faultsAndWarnings[1], 7),
-                ambientTemperatureTooHigh = isBitSetInByte(faultsAndWarnings[1], 6),
-                controllerTemperatureTooHigh = isBitSetInByte(faultsAndWarnings[1], 5),
-                loadOverPowerOrOverCurrent = isBitSetInByte(faultsAndWarnings[1], 4),
-                loadShortCircuit = isBitSetInByte(faultsAndWarnings[1], 3),
-                batteryUnderVoltage = isBitSetInByte(faultsAndWarnings[1], 2),
-                batteryOverVoltage = isBitSetInByte(faultsAndWarnings[1], 1),
-                batteryOverDischarge = isBitSetInByte(faultsAndWarnings[1], 0)
+            batteryCapacitySoc = registers[0].toUnsignedShort(),
+            batteryVoltage = parseVolts(registers[1]),
+            batteryChargingCurrent = parseAmperes(registers[2]),
+            controllerTemperature = parseTemperature(temperatures[0]),
+            batteryTemperature = parseTemperature(temperatures[1]),
+            loadVoltage = parseVolts(registers[4]),
+            loadCurrent = parseAmperes(registers[5]),
+            loadPower = registers[6].toUnsignedShort(),
+            solarPanelVoltage = parseVolts(registers[7]),
+            solarPanelCurrent = parseAmperes(registers[8]),
+            solarPanelPower = registers[9].toUnsignedShort(),
+            dailyBatteryVoltageMin = parseVolts(registers[11]),
+            dailyBatteryVoltageMax = parseVolts(registers[12]),
+            dailyChargingCurrentMax = parseAmperes(registers[13]),
+            dailyDischargingCurrentMax = parseAmperes(registers[14]),
+            dailyChargingPowerMax = registers[15].toUnsignedShort(),
+            dailyDischargingPowerMax = registers[16].toUnsignedShort(),
+            dailyChargingAmpHrs = registers[17].toUnsignedShort(),
+            dailyDischargingAmpHrs = registers[18].toUnsignedShort(),
+            dailyPowerGeneration = registers[19].toUnsignedShort(),
+            dailyPowerConsumption = registers[20].toUnsignedShort(),
+            totalOperatingDays = registers[21].toUnsignedShort(),
+            totalBatteryOverDischarges = registers[22].toUnsignedShort(),
+            totalBatteryFullCharges = registers[23].toUnsignedShort(),
+            totalBatteryChargingAmpHrs = twoRegistersToUnsignedInt(registers[24], registers[25]),
+            totalBatteryDischargingAmpHrs = twoRegistersToUnsignedInt(registers[26], registers[27]),
+            cumulativePowerGeneration = twoRegistersToUnsignedInt(registers[28], registers[29]),
+            cumulativePowerConsumption = twoRegistersToUnsignedInt(registers[30], registers[31]),
+            loadStatus = isBitSetInByte(loadAndChargingStatus[0], 7),
+            streetLightBrightness = clearBit(loadAndChargingStatus[0], 7).toInt(),
+            chargingState = loadAndChargingStatus[1].toInt(),
+            chargeMosShortCircuit = isBitSetInByte(faultsAndWarnings[0], 6),
+            antiReverseMosShort = isBitSetInByte(faultsAndWarnings[0], 5),
+            solarPanelReverselyConnected = isBitSetInByte(faultsAndWarnings[0], 4),
+            solarPanelWorkingPointOverVoltage = isBitSetInByte(faultsAndWarnings[0], 3),
+            solarPanelCounterCurrent = isBitSetInByte(faultsAndWarnings[0], 2),
+            photovoltaicInputSideOverVoltage = isBitSetInByte(faultsAndWarnings[0], 1),
+            photovoltaicInputSideShortCircuit = isBitSetInByte(faultsAndWarnings[0], 0),
+            photovoltaicInputOverPower = isBitSetInByte(faultsAndWarnings[1], 7),
+            ambientTemperatureTooHigh = isBitSetInByte(faultsAndWarnings[1], 6),
+            controllerTemperatureTooHigh = isBitSetInByte(faultsAndWarnings[1], 5),
+            loadOverPowerOrOverCurrent = isBitSetInByte(faultsAndWarnings[1], 4),
+            loadShortCircuit = isBitSetInByte(faultsAndWarnings[1], 3),
+            batteryUnderVoltage = isBitSetInByte(faultsAndWarnings[1], 2),
+            batteryOverVoltage = isBitSetInByte(faultsAndWarnings[1], 1),
+            batteryOverDischarge = isBitSetInByte(faultsAndWarnings[1], 0)
         ).also {
             logger.debug("Got data from solar charge controller: {}", it)
         }
@@ -85,10 +85,10 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
     }
 
     private fun isBitSetInByte(byte: Byte, position: Int): Boolean =
-            when((byte.toInt() shr position) and 1) {
-                1 -> true
-                else -> false
-            }
+        when ((byte.toInt() shr position) and 1) {
+            1 -> true
+            else -> false
+        }
 
     private fun clearBit(value: Byte, position: Int): Byte = (value and (1 shl position).inv().toByte())
 
@@ -104,10 +104,10 @@ class RenogyClient(private val renogySerialClient: RenogySerialClient) {
         val leastSignificantByteArray = leastSignificantRegister.toBytes()
 
         val combinedByteArray = byteArrayOf(
-                mostSignificantByteArray[0],
-                mostSignificantByteArray[1],
-                leastSignificantByteArray[0],
-                leastSignificantByteArray[1]
+            mostSignificantByteArray[0],
+            mostSignificantByteArray[1],
+            leastSignificantByteArray[0],
+            leastSignificantByteArray[1]
         )
 
         return toUnsignedInt(combinedByteArray)
