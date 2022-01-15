@@ -1,4 +1,4 @@
-FROM adoptopenjdk:11-jre
+FROM eclipse-temurin:17-jre
 
 MAINTAINER Dominic Miglar <dominic.miglar@netunix.at>
 

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
+		<version>2.6.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.logreposit</groupId>
@@ -15,8 +15,9 @@
 	<description>Communicate with the Renogy Rover / SRNE Solar Charge Controllers</description>
 
 	<properties>
-		<java.version>11</java.version>
-		<kotlin.version>1.3.72</kotlin.version>
+		<java.version>17</java.version>
+		<kotlin.version>1.6.10</kotlin.version>
+		<spotless.version>2.18.0</spotless.version>
 	</properties>
 
 	<dependencies>
@@ -26,8 +27,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-json</artifactId>
 		</dependency>
 
 		<dependency>
@@ -38,11 +39,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-kotlin</artifactId>
 		</dependency>
 
 		<dependency>
@@ -74,7 +70,7 @@
 		<dependency>
 			<groupId>com.ghgande</groupId>
 			<artifactId>j2mod</artifactId>
-			<version>2.7.0</version>
+			<version>3.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -132,10 +128,11 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.6</version>
+				<version>0.8.7</version>
 				<executions>
 					<execution>
 						<goals>
@@ -150,6 +147,23 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>${spotless.version}</version>
+				<configuration>
+					<kotlin>
+						<includes>
+							<include>src/main/kotlin/**/*.kt</include>
+							<include>src/test/kotlin/**/*.kt</include>
+						</includes>
+						<ktlint>
+							<version>0.43.2</version>
+						</ktlint>
+					</kotlin>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
