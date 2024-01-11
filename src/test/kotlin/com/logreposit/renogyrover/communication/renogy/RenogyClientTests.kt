@@ -1,10 +1,10 @@
 package com.logreposit.renogyrover.communication.renogy
 
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.whenever
 import kotlin.experimental.and
 
 class RenogyClientTests {
