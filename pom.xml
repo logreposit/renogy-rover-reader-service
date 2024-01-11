@@ -16,8 +16,8 @@
 
 	<properties>
 		<java.version>17</java.version>
-        <kotlin.version>1.9.22</kotlin.version>
-        <spotless.version>2.41.1</spotless.version>
+		<kotlin.version>1.9.22</kotlin.version>
+		<spotless.version>2.41.1</spotless.version>
 	</properties>
 
 	<dependencies>
