@@ -2,8 +2,8 @@ version: 2.1
 
 
 orbs:
-  maven: circleci/maven@1.2.0
-  codecov: codecov/codecov@3.2.2
+  maven: circleci/maven@1.4.1
+  codecov: codecov/codecov@3.3.0
 
 
 executors:
@@ -11,7 +11,7 @@ executors:
     environment:
       _JAVA_OPTIONS: "-Xmx512m"
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:21.0
 
 
 jobs:
@@ -151,3 +151,4 @@ workflows:
           requires:
             - compile
             - tests
+
