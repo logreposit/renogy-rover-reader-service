@@ -18,6 +18,7 @@ is labeled with the Renogy brand (and I really could not find out which of those
 the actual manufacturer 😅).
 
 Possible model descriptions are (list not finished):
+- Renogy Rover 20/30/40/60/.. MPPT Solar Charge Controller
 - TOYO SR-ML2420
 - TOYO SR-ML2430
 - TOYO SR-ML2440
@@ -53,7 +54,7 @@ version: '2.4'
 services:
   renogy-rover-reader-service:
     container_name: logreposit-renogy-rover-reader-service
-    image: logreposit/renogy-rover-reader-service:v0.1.0
+    image: logreposit/renogy-rover-reader-service:v0.3.0
     restart: always
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"

@@ -4,13 +4,13 @@ import com.logreposit.renogyrover.communication.renogy.RenogyClient
 import com.logreposit.renogyrover.communication.renogy.RenogyRamData
 import com.logreposit.renogyrover.services.logreposit.LogrepositApiService
 import com.logreposit.renogyrover.services.logreposit.SharedTestData.sampleRamData
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.whenever
 
 class ScheduledReportingServiceTests {
 
